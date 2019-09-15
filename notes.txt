@@ -1,0 +1,38 @@
+1. REST services borrow the below mentioned mechanisms from HTTP :-
+    -   Resource based URL's
+    -   HTTP methods are used {GET, PUT, POST, DELETE}
+    -   Responce responds back with appropriate HTTP status codes.
+    -   Responce should have appropriate headers like content-type.
+
+2. The REST Resource URI's are of 2 types
+    -   Instance URI - Get details for single Resource. EX - /messages/{messageId}
+    -   Collection URI - Get a collection of details. EX - /messages
+
+3. Query parameters can be used for Pagination and Filtering. EX - /messages/{messageId}?results=10&year=2014.
+
+4. When creating a new resource instance we use the POST method with collections URI. EX - /messages
+
+5.  Idempotent methods - GET, PUT, DELETE {Can be repeated}
+    Non-Idempotent methods - POST
+
+6. The different error codes classes are mentioned below :-
+    -   1XX - Informational
+    -   2XX - Success
+    -   3XX - Redirection
+    -   4XX - Client error
+    -   5XX - Server error
+
+7. HATEOAS is a way to provide client link to various resources as a responce to an api call so that no URL creation has to be done at client side.
+
+8. In SOAP services only one API end point is exposed and the request body contains details for what operation is to be performed.
+
+9. According to Richardson Maturity Model below mentioned are the levels of REST service achived :-
+
+    -   Lvl 0 - Using single API endpoint
+    -   Lvl 1 - Using resource based URI'service
+    -   Lvl 2 - Using HTTP methods {POST, PUT etc}
+    -   Lvl 3 - HATEOAS
+
+10. JAX-RS is a set of interfaces and annotations that has api's for REST services. Library classes like jersey or RESTeasy 
+implement these interfaces and make sense of the annotations wherever the JAX-RS api's are used. Every JAX-RS Library comes
+with a copy of JAX-RS.
