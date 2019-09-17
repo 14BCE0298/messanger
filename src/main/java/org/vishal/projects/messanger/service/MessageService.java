@@ -19,9 +19,8 @@ public class MessageService {
 		return messages.get(id);
 	}
 	
-	@SuppressWarnings("unlikely-arg-type")
 	public Message addMessage(Message message) {
-		message.setId(messages.get(messages.size()).getId() + 1);
+		message.setId(messages.size() + 1);
 		messages.put(message.getId(), message);
 		return message;
 	}

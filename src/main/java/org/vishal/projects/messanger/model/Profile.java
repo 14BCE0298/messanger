@@ -2,9 +2,6 @@ package org.vishal.projects.messanger.model;
 
 import java.util.Date;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class Profile {
 
 	private long id;
