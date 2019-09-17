@@ -36,3 +36,7 @@
 10. JAX-RS is a set of interfaces and annotations that has api's for REST services. Library classes like jersey or RESTeasy 
 implement these interfaces and make sense of the annotations wherever the JAX-RS api's are used. Every JAX-RS Library comes
 with a copy of JAX-RS.
+
+11. jaxb is used by java to convert response to XML file.
+
+12. Always have a no-arg constructor whenre turning XML/JSON responce as the associated libraries uses it internally.
