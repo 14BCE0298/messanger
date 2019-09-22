@@ -2,6 +2,7 @@ package org.vishal.projects.messanger.resources;
 
 import java.util.List;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,6 +15,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.vishal.projects.messanger.model.Message;
+import org.vishal.projects.messanger.resources.beans.MessageFilterBean;
 import org.vishal.projects.messanger.service.MessageService;
 
 @Path("/messages")
@@ -22,13 +24,11 @@ public class MessageResource {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Message> getAllMessages(@QueryParam("year") int year,
-										@QueryParam("start") int start,
-										@QueryParam("size") int size) {
-		if(year > 0) {
-			return MessageService.getMessagesByYear(year);
-		} else if (start >= 0 && size > 0) {
-			return MessageService.getMessagesByPagination(start, size);
+	public List<Message> getAllMessages(@BeanParam MessageFilterBean messageFilterBean) {
+		if(messageFilterBean.getYear() > 0) {
+			return MessageService.getMessagesByYear(messageFilterBean.getYear());
+		} else if (messageFilterBean.getStart() >= 0 && messageFilterBean.getSize() > 0) {
+			return MessageService.getMessagesByPagination(messageFilterBean.getStart(), messageFilterBean.getSize());
 		}
 			else {
 			return MessageService.getAllMessages();

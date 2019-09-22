@@ -40,3 +40,14 @@ with a copy of JAX-RS.
 11. jaxb is used by java to convert response to XML file.
 
 12. Always have a no-arg constructor whenre turning XML/JSON responce as the associated libraries uses it internally.
+
+13. @QueryParam URL design = http://localhost:8080/messanger/webapi/messages?start=0&size=2
+
+14. Some important params that we can extract from incoming request :-
+
+    -   @MatrixParam    -> Similar as @QueryParam but uses ; to seprate values;
+    -   @HeaderParam    -> Get token value sent in header.
+    -   @CookieParam    -> Get token value sent in cookie.
+    -   @Context        -> This cannot annotate to any datatype but only few selected ones like 'class:UriInfo, HttpHeaders' and 
+                           is used to get details about the request without specifying details if you don't know them before hand,
+                           like AbsolutePath, ContextPath, QueryParams, Cookies etc
