@@ -51,3 +51,81 @@ with a copy of JAX-RS.
     -   @Context        -> This cannot annotate to any datatype but only few selected ones like 'class:UriInfo, HttpHeaders' and 
                            is used to get details about the request without specifying details if you don't know them before hand,
                            like AbsolutePath, ContextPath, QueryParams, Cookies etc
+
+15. Responce object can be returned instead of actual object as Responce class has methods to return any class entity along with
+editing HTTP status codes (.status(Status.CREATED)), return an object/value (.entity), sending URI along with status code 201
+(.created(new URI("/messanger/webapi/messages/ + message.getId())));
+
+EX - 
+@POST
+	public Response addMessage(Message message, @Context UriInfo uriInfo) {
+		
+		Message newMessage = messageService.addMessage(message);
+		String newId = String.valueOf(newMessage.getId());
+		URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();
+		return Response.created(uri)
+				.entity(newMessage)
+				.build();
+	}
+
+16. A basic exception handlind example for REST calls :-
+
+    //method that may have exception scenario
+    public Message getMessage(long id) {                                
+            Message message = messages.get(id);
+            if (message == null) {
+                throw new DataNotFoundException("Message with id " + id + " not found");
+            }
+            return message;
+        }
+
+    public class DataNotFoundException extends RuntimeException {       //Custom exception handling class
+	private static final long serialVersionUID = -6328286661536343936L;
+	public DataNotFoundException(String message) {
+		super(message);
+	}
+
+    //Error object Class
+    @XmlRootElement
+    public class ErrorMessage {
+
+	private String errorMessage;
+	private int errorCode;
+	private String documentation;
+	
+	public ErrorMessage() {
+		
+	}
+		
+	public ErrorMessage(String errorMessage, int errorCode, String documentation) {
+		super();
+		this.errorMessage = errorMessage;
+		this.errorCode = errorCode;
+		this.documentation = documentation;
+	}
+
+
+    // Class to implement and Map exception to responce when thrown
+    @Provider //annotation to let jax.rs know that this class exists
+    public class DataNotFoundExceptionMapper implements ExceptionMapper<DataNotFoundException> { 
+
+	@Override
+	public Response toResponse(DataNotFoundException ex) {
+		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), 404, "http://javabrains.koushik.org");
+		return Response.status(Status.NOT_FOUND)
+				.entity(errorMessage)
+				.build();
+	}
+	
+
+    //Providing generic exception handler class
+    @Provider
+    public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
+
+	@Override
+	public Response toResponse(Throwable ex) {
+		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), 500, "http://javabrains.koushik.org");
+		return Response.status(Status.INTERNAL_SERVER_ERROR)
+				.entity(errorMessage)
+				.build();
+	} 
