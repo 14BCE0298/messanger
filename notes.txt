@@ -129,3 +129,24 @@ EX -
 				.entity(errorMessage)
 				.build();
 	} 
+
+    17. The Jersey Library provides you with 'WebApplicationException' where you can set from a set of constructor option
+    on how to handle an error scenario that may happen in a web-application.
+    EX - 
+    public Comment getComment(long messageId, long commentId) {
+		ErrorMessage errorMessage = new ErrorMessage("Not found", 404, "http://javabrains.koushik.org");
+		Response response = Response.status(Status.NOT_FOUND)
+				.entity(errorMessage)
+				.build();
+		
+		Message message = messages.get(messageId);
+		if (message == null) {
+			throw new WebApplicationException(response); //Creating your responce and sending
+		}
+		Map<Long, Comment> comments = messages.get(messageId).getComments();
+		Comment comment = comments.get(commentId);
+		if (comment == null) {
+			throw new NotFoundException(response); //Using a standard error code part of WebApplicationException
+		}
+		return comment;
+	}  
